@@ -1,20 +1,19 @@
-// SortBar.js
 import React from 'react';
 
 function SortBar({ onSort }) {
-  const handleSort = (criteria) => {
-    onSort(criteria);
-  };
-
   return (
-    <div>
-      <h3>Sort by:</h3>
-      <button onClick={() => handleSort('health')}>Health</button>
-      <button onClick={() => handleSort('damage')}>Damage</button>
-      <button onClick={() => handleSort('armor')}>Armor</button>
+    <div className="sort-bar">
+      <span>Sort By:</span>
+      <button onClick={() => onSort('health')}>Health</button>
+      <button onClick={() => onSort('damage')}>Damage</button>
+      <button onClick={() => onSort('armor')}>Armor</button>
     </div>
   );
 }
 
 export default SortBar;
+
+
+
+
 

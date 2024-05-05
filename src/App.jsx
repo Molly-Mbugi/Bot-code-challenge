@@ -10,12 +10,19 @@ function App() {
   const [selectedBot, setSelectedBot] = useState(null);
   const [botArmy, setBotArmy] = useState([]);
   const [sortBy, setSortBy] = useState('');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     fetch("http://localhost:3000/bots")
       .then(response => response.json())
-      .then(data => setBots(data))
-      .catch(error => console.error('Error fetching bot data:', error));
+      .then(data => {
+        setBots(data);
+        setLoading(false); // Update loading state when data is fetched
+      })
+      .catch(error => {
+        console.error('Error fetching bot data:', error);
+        setLoading(false); // Update loading state if there's an error
+      });
   }, []);
 
   function handleDisplayBotInfo(id) {
@@ -65,22 +72,28 @@ function App() {
 
   return (
     <div className="App">
-      {selectedBot ? (
-        <BotSpecs
-          bot={selectedBot}
-          onGoBack={handleGoBack}
-          onEnlist={handleEnlist}
-          onDischarge={handleDischarge}
-        />
+      {loading ? (
+        <div>Loading...</div>
       ) : (
         <>
-          <YourBotArmy botArmy={botArmy} onRelease={handleRelease} />
-          <SortBar onSort={handleSort} />
-          <BotCollection
-            bots={sortedBots}
-            onDisplayBotInfo={handleDisplayBotInfo}
-            onEnlist={handleEnlist} 
-          />
+          {selectedBot ? (
+            <BotSpecs
+              bot={selectedBot}
+              onGoBack={handleGoBack}
+              onEnlist={handleEnlist}
+              onDischarge={handleDischarge}
+            />
+          ) : (
+            <>
+              <YourBotArmy botArmy={botArmy} onRelease={handleRelease} />
+              <SortBar onSort={handleSort} />
+              <BotCollection
+                bots={sortedBots}
+                onDisplayBotInfo={handleDisplayBotInfo}
+                onEnlist={handleEnlist} 
+              />
+            </>
+          )}
         </>
       )}
     </div>
@@ -88,16 +101,6 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
 
 
 

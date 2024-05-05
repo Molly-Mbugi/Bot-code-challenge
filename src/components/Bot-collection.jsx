@@ -22,7 +22,9 @@ function BotCollection({ bots, onDisplayBotInfo, onEnlist }) {
   );
 }
 
-export default BotCollection;
+export default BotCollection
+
+
 
 
 
