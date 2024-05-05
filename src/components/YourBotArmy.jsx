@@ -1,17 +1,11 @@
-// YourBotArmy.js
 import React from 'react';
 
-function YourBotArmy({ army, dischargeFromArmy }) {
-  const handleDischarge = (bot) => {
-    dischargeFromArmy(bot);
-  };
-
+function YourBotArmy({ army, onRelease }) {
   return (
     <div>
       <h2>Your Bot Army</h2>
       <div className="your-bot-army">
-        {/* Render the enlisted bots */}
-        {army.map(bot => (
+        {army && army.map(bot => (
           <div key={bot.id} className="enlisted-bot">
             <img src={bot.avatar_url} alt={bot.name} />
             <h3>{bot.name}</h3>
@@ -20,8 +14,7 @@ function YourBotArmy({ army, dischargeFromArmy }) {
             <p>Armor: {bot.armor}</p>
             <p>Class: {bot.bot_class}</p>
             <p>Catchphrase: {bot.catchphrase}</p>
-            {/* Button to discharge the bot */}
-            <button onClick={() => handleDischarge(bot)} className="discharge-btn">X</button>
+            <button onClick={() => onRelease(bot)}>Release</button>
           </div>
         ))}
       </div>
@@ -30,6 +23,7 @@ function YourBotArmy({ army, dischargeFromArmy }) {
 }
 
 export default YourBotArmy;
+
 
 
 

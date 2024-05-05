@@ -1,58 +1,99 @@
-// App.js
-import React, { useState, useEffect } from 'react';
-import BotCollection from './Bot-collection';
-import YourBotArmy from './YourBotArmy';
-import SortBar from './SortBar';
+import React, { useEffect, useState } from 'react';
+import BotCollection from './components/Bot-collection';
+import BotSpecs from './components/BotSpecs';
+import SortBar from './components/SortBar';
+import YourBotArmy from './components/YourBotArmy';
+import './App.css';
 
 function App() {
   const [bots, setBots] = useState([]);
+  const [selectedBot, setSelectedBot] = useState(null);
   const [botArmy, setBotArmy] = useState([]);
-  const [enlistedClasses, setEnlistedClasses] = useState([]);
-  const [sortCriteria, setSortCriteria] = useState(null);
+  const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {
     fetch("http://localhost:3000/bots")
       .then(response => response.json())
       .then(data => setBots(data))
+      .catch(error => console.error('Error fetching bot data:', error));
   }, []);
 
-  const addToArmy = (bot) => {
-    setBotArmy(prevArmy => [...prevArmy, bot]);
-    setEnlistedClasses(prevClasses => [...prevClasses, bot.bot_class]);
-  };
+  function handleDisplayBotInfo(id) {
+    setSelectedBot(bots.find(bot => bot.id === id));
+  }
 
-  const handleSort = (criteria) => {
-    setSortCriteria(criteria);
-  };
+  function handleGoBack() {
+    setSelectedBot(null);
+  }
 
-  const handleFilter = (classFilter) => {
-    if (!enlistedClasses.includes(classFilter)) {
-      setEnlistedClasses(prevClasses => [...prevClasses, classFilter]);
-    }
-  };
+  function handleEnlist(id) {
+    const botToAdd = bots.find(bot => bot.id === id);
+    setBotArmy(prevArmy => [...prevArmy, botToAdd]);
+    setBots(prevBots => prevBots.filter(bot => bot.id !== id));
+  }
 
-  const sortedAndFilteredBots = () => {
-    let filteredBots = bots;
-    if (enlistedClasses.length > 0) {
-      filteredBots = filteredBots.filter(bot => enlistedClasses.includes(bot.bot_class));
+  function handleRelease(id) {
+    setBotArmy(prevArmy => prevArmy.filter(bot => bot.id !== id));
+  }
+
+  function handleDischarge(id) {
+    fetch(`http://localhost:3000/bots/${id}`, {
+      method: 'DELETE'
+    })
+    .then(() => {
+      setBotArmy(prevArmy => prevArmy.filter(bot => bot.id !== id));
+      setBots(prevBots => prevBots.filter(bot => bot.id !== id));
+    })
+    .catch(error => console.error('Error discharging bot:', error));
+  }
+
+  function handleSort(criteria) {
+    setSortBy(criteria);
+  }
+
+  const sortedBots = [...bots].sort((a, b) => {
+    if (sortBy === 'health') {
+      return b.health - a.health;
+    } else if (sortBy === 'damage') {
+      return b.damage - a.damage;
+    } else if (sortBy === 'armor') {
+      return b.armor - a.armor;
+    } else {
+      return 0;
     }
-    if (sortCriteria) {
-      filteredBots.sort((a, b) => b[sortCriteria] - a[sortCriteria]);
-    }
-    return filteredBots;
-  };
+  });
 
   return (
     <div className="App">
-      <h1>Bot Collection</h1>
-      <SortBar onSort={handleSort} />
-      <BotCollection bots={sortedAndFilteredBots()} addToArmy={addToArmy} enlistedClasses={enlistedClasses} />
-      <YourBotArmy army={botArmy} />
+      {selectedBot ? (
+        <BotSpecs
+          bot={selectedBot}
+          onGoBack={handleGoBack}
+          onEnlist={handleEnlist}
+          onDischarge={handleDischarge}
+        />
+      ) : (
+        <>
+          <YourBotArmy botArmy={botArmy} onRelease={handleRelease} />
+          <SortBar onSort={handleSort} />
+          <BotCollection
+            bots={sortedBots}
+            onDisplayBotInfo={handleDisplayBotInfo}
+            onEnlist={handleEnlist} 
+          />
+        </>
+      )}
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+
 
 
 

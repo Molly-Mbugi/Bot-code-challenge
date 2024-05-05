@@ -1,42 +1,63 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.App {
   text-align: center;
+  background: #42bb1e;
+  color: white;
+  font-family: 'Roboto Mono', monospace;
+  
+  font-size: 14px;
+  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+/* styles.css */
+
+.bot-collection {
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.bot-profile {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: calc(33.33% - 20px); /* Adjust the width based on the number of columns you want */
+  margin: 10px; /* Add margin between items */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bot-profile img {
+  max-width: 100%;
+  height: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.bot-profile h3 {
+  margin: 10px 0;
 }
 
-.card {
-  padding: 2em;
+.bot-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.read-the-docs {
-  color: #888;
+.bot-table th,
+.bot-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
 }
+
+.bot-table th {
+  background-color: #f0f0f0;
+}
+
+.bot-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.bot-table tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
