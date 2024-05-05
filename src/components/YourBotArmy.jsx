@@ -1,6 +1,8 @@
 // YourBotArmy.jsx
 
 import React from 'react';
+import "./../App.css";
+
 
 function YourBotArmy({ botArmy, onRelease }) {
   return (
@@ -21,4 +23,5 @@ function YourBotArmy({ botArmy, onRelease }) {
 }
 
 export default YourBotArmy;
+
 

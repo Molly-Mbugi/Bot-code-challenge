@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function BotCollection({ bots, onDisplayBotInfo, onEnlist }) {
   return (
@@ -14,7 +15,10 @@ function BotCollection({ bots, onDisplayBotInfo, onEnlist }) {
             <p>Armor: {bot.armor}</p>
             <p>Class: {bot.bot_class}</p>
             <p>Catchphrase: {bot.catchphrase}</p>
-            <button onClick={() => onEnlist(bot.id)}>Enlist</button> {/* Ensure that onEnlist is used as the onClick handler */}
+            <div className="button-container">
+              <button onClick={() => onEnlist(bot.id)}>Enlist</button>
+              <Link to="/" className="back-button">Back</Link> {/* Back button */}
+            </div>
           </div>
         ))}
       </div>
@@ -22,7 +26,8 @@ function BotCollection({ bots, onDisplayBotInfo, onEnlist }) {
   );
 }
 
-export default BotCollection
+export default BotCollection;
+
 
 
 
